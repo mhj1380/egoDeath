@@ -1,0 +1,23 @@
+
+
+.stickman{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    height: 70vh;
+}
+
+.teleprompter{
+    width: 100%;
+}
+
+h3{
+        font-size: 40px;
+        font-weight: 600;
+        letter-spacing: -3px;
+        line-height: 1.2;
+        text-align: center;
+        margin: 20px; 
+}

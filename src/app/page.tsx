@@ -1,95 +1,140 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+import Link from "next/link";
+import "./styles.css";
+import { useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useSpring,
+  useTransform,
+  useMotionValue,
+  useVelocity,
+  useAnimationFrame,
+  color
+} from "framer-motion";
+import { wrap } from "@motionone/utils";
 
-export default function Home() {
+
+
+
+interface ParallaxProps {
+  children: string;
+  baseVelocity: number;
+}
+
+function ParallaxText({ children, baseVelocity = 100 }: ParallaxProps) {
+  const baseX = useMotionValue(0);
+  const { scrollY } = useScroll();
+  const scrollVelocity = useVelocity(scrollY);
+  const smoothVelocity = useSpring(scrollVelocity, {
+    damping: 50,
+    stiffness: 400
+  });
+  const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
+    clamp: false
+  });
+
+  /**
+   * This is a magic wrapping for the length of the text - you
+   * have to replace for wrapping that works for you or dynamically
+   * calculate
+   */
+  const x = useTransform(baseX, (v) => `${wrap(-20, -45, v)}%`);
+
+  const directionFactor = useRef<number>(1);
+  useAnimationFrame((t, delta) => {
+    let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
+
+    /**
+     * This is what changes the direction of the scroll once we
+     * switch scrolling directions.
+     */
+    if (velocityFactor.get() < 0) {
+      directionFactor.current = -1;
+    } else if (velocityFactor.get() > 0) {
+      directionFactor.current = 1;
+    }
+
+    moveBy += directionFactor.current * moveBy * velocityFactor.get();
+
+    baseX.set(baseX.get() + moveBy);
+  });
+
+  /**
+   * The number of times to repeat the child text should be dynamically calculated
+   * based on the size of the text and viewport. Likewise, the x motion value is
+   * currently wrapped between -20 and -45% - this 25% is derived from the fact
+   * we have four children (100% / 4). This would also want deriving from the
+   * dynamically generated number of children.
+   */
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <div className="parallax">
+      <motion.div className="scroller" style={{ x }}>
+        <span>{children} </span>
+        <span>{children} </span>
+        <span>{children} </span>
+        <span>{children} </span>
+      </motion.div>
+    </div>
+  );
+}
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+export default function WordSlider() {
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+  return (
+  <div>
+  
+    <section>
+      <ParallaxText baseVelocity={-2}>everyone is going crazy</ParallaxText>
+      <ParallaxText baseVelocity={5}>what about you?</ParallaxText>
+    </section>
+    <section>
+      <ParallaxText baseVelocity={-2}>everyone is going crazy</ParallaxText>
+      <ParallaxText baseVelocity={5}>what about you?</ParallaxText>
+    </section>
+    <section>
+      <ParallaxText baseVelocity={-2}>everyone is going crazy</ParallaxText>
+      <ParallaxText baseVelocity={5}>what about you?</ParallaxText>
+    </section>
+    <section>
+      <ParallaxText baseVelocity={-2}>everyone is going crazy</ParallaxText>
+      <ParallaxText baseVelocity={5}>what about you?</ParallaxText>
+    </section>
+    <section>
+      <ParallaxText baseVelocity={-2}>everyone is going crazy</ParallaxText>
+      <ParallaxText baseVelocity={5}>what about you?</ParallaxText>
+    </section>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
+    <section>
+      <ParallaxText baseVelocity={-2}>everyone is going crazy</ParallaxText>
+      <ParallaxText baseVelocity={5}>what about you?</ParallaxText>
+    </section>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
+    <section>
+      <ParallaxText baseVelocity={-2}>everyone is going crazy</ParallaxText>
+      <ParallaxText baseVelocity={5}>what about you?</ParallaxText>
+    </section>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    <section>
+      <ParallaxText baseVelocity={-2}>everyone is going crazy</ParallaxText>
+      <ParallaxText baseVelocity={5}>what about you?</ParallaxText>
+    </section>
+      <h1 className="crazy-quote">
+     MORE YOU THINK, MORE CRAZY YOU BECOME
+
+
+    
+     </h1>
+     
+     <div className='button-div'>
+     
+     {<Link href="/embrace"><button className='unravel-button'>LET ME DO THE THINKING</button></Link>} 
+     {<Link href="/embrace"><button className='unravel-button'>LET ME DO THE THINKING</button></Link>}
+     {<Link href="/embrace"><button className='unravel-button'>LET ME DO THE THINKING</button></Link>}
+     {<Link href="/embrace"><button className='unravel-button'>LET ME DO THE THINKING</button></Link>}
+    
+     </div>
+    
+    </div>
   );
 }

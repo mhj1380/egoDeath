@@ -1,0 +1,30 @@
+.type-effect{
+    color: #fe0222;
+}
+
+.button-div {
+
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  
+    
+  }
+
+
+  .unravel-button {
+    background-color: #000000;
+    color: black ;
+    padding: 20px;
+    margin: 15px;
+    border-color: #fe0222;
+    background-color: #fe0222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+   
+   
+      }
