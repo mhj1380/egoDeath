@@ -52,8 +52,8 @@ export default function Lesson() {
         if (clickCount>10){
           setShowParagraph(true)
         }
-      }, 200);
-  //275000
+      }, 27500);
+  //27500
       return () => clearTimeout(timer);
     }, );
   

@@ -42,7 +42,7 @@ const DelayedButton = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowParagraph(true);
-    }, 1000);
+    }, 42000);
 //42000
     return () => clearTimeout(timer);
   }, []);
